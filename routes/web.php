@@ -1,6 +1,12 @@
 <?php
 
+use App\Http\Controllers\AboutController;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\HttpKernel\Profiler\Profile;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +19,58 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+// Route::get('/hello', function () {
+//     return 'hello world';
+// });
+
+Route::get('/world', function () {
+    return 'World';
 });
+
+Route::get('/user/{name}', function ($name) {
+    return 'Nama saya '.$name;
+});
+
+Route::get('/posts/{post}/comments/{comment}', function
+($postId, $commentId) {
+ return 'Pos ke-'.$postId." Komentar ke-: ".$commentId;
+});
+
+Route::get('/users/{name?}', function ($name=null) {
+    return 'Nama saya '.$name;
+});
+
+Route::get('/userss/{name?}', function ($name='John') {
+    return 'Nama saya '.$name;
+    });
+
+Route::get('/user/profile', function() {
+
+       })->name('profile');
+
+Route::get('/profilebaru', function() {
+        return to_route(route:'profile');
+       });
+
+Route::get('/hello', [WelcomeController::class,'hello']);
+
+Route::get('/index', [PageController::class,'index']);
+Route::get('/about', [PageController::class,'about']);
+Route::get('/articles/{id}', [PageController::class,'articles']);
+
+Route::get('/index', [HomeController::class,'index']);
+Route::get('/about', [AboutController::class,'about']);
+Route::get('/articles/{id}', [ArticleController::class,'articles']);
+
+use App\Http\Controllers\PhotoController;
+Route::resource('photos', PhotoController::class);
+
+Route::get('/greeting', function () {
+    return view('hello', ['name' => 'Maul']);
+    });
+
+Route::get('/greeting', function () {
+        return view('blog.hello', ['name' => 'Arya']);
+        });
+Route::get('/greeting', [WelcomeController::class,
+        'greeting']);
